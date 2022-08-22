@@ -13,7 +13,8 @@ export const apiRutasNavigation = {
   getAnimeInfo: Infoid => `${URL_ANIME}/${Infoid}`,
   getVerAnimeId: id => `${URL_ANIME}/ver/${id}`,
   getUserLogin: `${URL_ANIME}/user/login`,
-  getDownloadAnime: id => `${URL_ANIME}/ver/${id}/descarga`
+  getDownloadAnime: id => `${URL_ANIME}/ver/${id}/descarga`,
+  getSearchAnime: search => `${URL_ANIME}/animes?q=${search}`
 }
 
 export const getAxios = async (url = URL_ANIME) => {

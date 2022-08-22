@@ -1,17 +1,15 @@
 import { getAxios, parseAtributes, parseText, apiRutasNavigation, parse } from '../../api'
 
-export const verAnime = async (req, res) => {
+export const verAnime = async (req, res, next) => {
   const { id } = req.params
   const { getVerAnimeId } = apiRutasNavigation
   try {
     const html = await getAxios(getVerAnimeId(id))
     const colPrevnext = html.querySelectorAll('.columns .column .column').map(i => {
-      console.log(i.toString())
       return {
         link: parseAtributes(i, 'a', 'href')
       }
     })
-    console.log(colPrevnext)
     const conditionalPrev = colPrevnext[0].link.split('-').pop()
     const conditionalNext = colPrevnext[1].link.split('-').pop()
 
@@ -23,7 +21,6 @@ export const verAnime = async (req, res) => {
         [index]: name.attributes.title
       }
     })
-
     res.status(200).json({
       name: parseText(html, '.title').trim(),
       controles: {
@@ -33,7 +30,7 @@ export const verAnime = async (req, res) => {
         },
         next: {
           existe: conditionalNext > 0,
-          link: colPrevnext[1].link
+          link: `/info/${colPrevnext[1].link.split('/').pop()}`
         }
       },
       Videos: iframeVideo.querySelectorAll('iframe').map((i, index) => {
@@ -44,6 +41,6 @@ export const verAnime = async (req, res) => {
       })
     })
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }

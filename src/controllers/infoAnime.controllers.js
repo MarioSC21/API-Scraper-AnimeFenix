@@ -1,6 +1,6 @@
 import { apiRutasNavigation, getAxios, parseAtributes, parseText } from '../../api'
 
-export const infoAnime = async (req, res) => {
+export const infoAnime = async (req, res, next) => {
   const { id } = req.params
   const { getAnimeInfo } = apiRutasNavigation
   try {
@@ -44,6 +44,6 @@ export const infoAnime = async (req, res) => {
       }).reverse()
     })
   } catch (error) {
-    return res.status(500).json({ error })
+    next(error)
   }
 }
